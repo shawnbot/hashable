@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>curio</title>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="curio.js"></script>
+    <style>
+      #state {
+        width: 20em;
+        height: 10em;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      <li><a href="#">reset: empty</a></li>
+      <li><a href="#?foo=bar&baz">reset: foo=bar, baz=true</a></li>
+      <li><a class="merge" href="#?qux=1">merge: qux=1</a></li>
+      <li><a class="merge" href="#?foo=">unset: foo</a></li>
+      <li><a class="merge" href="#some/path">path: some/path</a></li>
+    </ul>
+    <textarea id="state">
+    </textarea>
+  </body>
+  <script>
+
+    var state = {},
+        out = d3.select("#state"),
+        hash = curio.hash()
+          .change(function(e) {
+            state = e.data;
+            console.log("state:", state);
+            out.text(JSON.stringify(state, null, "    "));
+          });
+
+    d3.selectAll("a.merge")
+      .datum(hash.href.parse)
+      .call(hash.href.merge);
+
+    d3.select(window).call(hash);
+    hash.read();
+
+  </script>
+</html>
