@@ -1,7 +1,14 @@
 {
   "name": "hashable",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Browser hash manipulation, URL parsing, formatting, and more!",
+  "keywords": [
+    "hash",
+    "state",
+    "uri",
+    "browser",
+    "maps"
+  ],
   "main": "hashable.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
