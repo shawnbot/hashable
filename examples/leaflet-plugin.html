@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>curio</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css">
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+    <script src="http://maps.stamen.com/js/tile.stamen.js"></script>
+    <script src="../curio.js"></script>
+    <script src="../plugins/curio.leaflet.js"></script>
+    <style>
+      #state {
+        width: 20em;
+        height: 10em;
+      }
+
+      #map {
+        height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <ul>
+      <li><a href="#11/37.7691/-122.4399">San Francisco</a></li>
+      <li><a href="#13/51.505/-0.09">London</a></li>
+    </ul>
+  </body>
+  <script>
+
+    var map = L.map("map");
+
+    new L.StamenTileLayer("toner").addTo(map);
+
+    var hash = L.hash()
+      .addTo(map);
+
+    if (location.hash) {
+      hash.read();
+    } else {
+      map.setView([51.505, -0.09], 13);
+    }
+
+  </script>
+</html>
