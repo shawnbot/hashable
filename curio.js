@@ -2,7 +2,7 @@
   "use strict";
   /* jshint -W014 */
 
-  curio.version = "1.2.1";
+  curio.version = "1.3.0";
 
   curio.hash = function(loc) {
     if (!loc) loc = window.location;
