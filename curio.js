@@ -106,14 +106,18 @@
 
     var query = false,
         keys = [],
-        pattern = new RegExp("^" + fmt.replace(/{(\w+)}/g, function(_, key) {
+        word = "([-\\w\\.]+)",
+        wordPattern = new RegExp("{" + word + "}", "g"),
+        pattern = new RegExp("^" + fmt.replace(wordPattern, function(_, key) {
           keys.push(key);
-          return "(\\w+)";
+          return word;
         }) + "$");
+
+    // console.log("pattern:", pattern, "keys:", keys);
 
     var format = function(data) {
       var used = [];
-          str = fmt.replace(/{(\w+)}/g, function(_, key) {
+          str = fmt.replace(wordPattern, function(_, key) {
             return data[key];
           });
 
