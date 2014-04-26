@@ -81,7 +81,7 @@ Or you can adapt the [standalone example](https://github.com/shawnbot/curio/blob
 Just drop [hashable.js](https://raw.githubusercontent.com/shawnbot/hashable/master/hashable.js) (or the minified [hashable.min.js](https://raw.githubusercontent.com/shawnbot/hashable/master/hashable.min.js)) into the `<head>` of your
 HTML document, and access it via the global `hashable` object.
 
-```
+```html
 <!DOCTYPE html>
 <html>
   <head>
