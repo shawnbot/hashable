@@ -85,18 +85,18 @@ describe("curio.format.map()", function() {
     var fmt = curio.format.map();
     assert.deepEqual(fmt.parse("5/10/12.4"), {
       z: 5,
-      x: 10,
-      y: 12.4
+      y: 10,
+      x: 12.4
     });
     assert.deepEqual(fmt.parse("5/-102.4/-13.800001"), {
       z: 5,
-      x: -102.4,
-      y: -13.800001
+      y: -102.4,
+      x: -13.800001
     });
     assert.deepEqual(fmt.parse("5/102.4/13.8?style=toner"), {
       z: 5,
-      x: 102.4,
-      y: 13.8,
+      y: 102.4,
+      x: 13.8,
       style: "toner"
     });
   });
