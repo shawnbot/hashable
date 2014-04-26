@@ -223,6 +223,47 @@
     return format;
   };
 
+  curio.format.map = function() {
+    var fmt = curio.format("{z}/{x}/{y}")
+          .query(true),
+        precision = function(z) {
+          return Math.max(0, Math.ceil(Math.log(z) / Math.LN2));
+        };
+
+    var format = function(data) {
+      if (data.z) {
+        var p = precision(data.z);
+        data.x = (+data.x).toFixed(p);
+        data.y = (+data.y).toFixed(p);
+      }
+      return fmt(data);
+    };
+
+    format.match = fmt.match;
+
+    format.parse = function(str) {
+      var parsed = fmt.parse(str);
+      parsed.z = +parsed.z;
+      parsed.x = +parsed.x;
+      parsed.y = +parsed.y;
+      return parsed;
+    };
+
+    format.query = function(q) {
+      if (!arguments.length) return fmt.query();
+      fmt.query(q);
+      return fmt;
+    };
+
+    format.precision = function(p) {
+      if (!arguments.length) return precision;
+      precision = curio.functor(p);
+      return format;
+    };
+
+    return format;
+  };
+
   /*
    * query string parse & format
    */
@@ -358,6 +399,12 @@
     return (d === null)
         || (typeof d === "undefined")
         || d.length === 0;
+  };
+
+  curio.functor = function(d) {
+    return (typeof d === "function")
+      ? d
+      : function() { return d; };
   };
 
 })(typeof module === "object" ? module.exports : this.curio = {});
