@@ -228,7 +228,7 @@
   };
 
   curio.format.map = function() {
-    var fmt = curio.format("{z}/{x}/{y}")
+    var fmt = curio.format("{z}/{y}/{x}")
           .query(true),
         precision = function(z) {
           return Math.max(0, Math.ceil(Math.log(z) / Math.LN2));
