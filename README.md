@@ -12,8 +12,9 @@ var hash = curio.hash()
   .change(function(e) {
     console.log("hash data:", e.data);
   })
-  .read();
-  
+  .enable();
+
+// you can update the hash programmatically:
 hash.update({path: "path/to/foo", bar: "hi"});
 // this doesn't update the hash automatically, but this will:
 hash.write();
@@ -21,6 +22,20 @@ hash.write();
 // "path/to/foo?bar=hi"
 // and you should see a console.log():
 // "hash data: {path: 'path/to/foo', bar: 'hi'}"
+
+// you can disable and re-enable hashchange event listening:
+hash.disable();
+hash.enable();
+
+// you can set the default URL data as either an object literal or a function:
+hash.default({foo: "bar"});
+hash.default(function() {
+  return {foo: someCondition ? "bar" : "baz"};
+});
+
+// and check() does the dirty work of reading location.hash if it's set,
+// or writing location.hash with either the current or default value:
+hash.check();
 ```
 
 ### Parsers and Formatters
