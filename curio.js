@@ -5,9 +5,7 @@
   curio.hash = function(loc) {
     if (!loc) loc = window.location;
 
-    var hash = function(selection) {
-          window.addEventListener("hashchange", change);
-        },
+    var hash = {},
         data = {},
         current,
         format = curio.format.path(),
@@ -56,8 +54,14 @@
       return "#" + format(d);
     };
 
-    hash.disable = function(selection) {
+    hash.enable = function() {
+      window.addEventListener("hashchange", change);
+      return hash;
+    };
+
+    hash.disable = function() {
       window.removeEventListener("hashchange", change);
+      return hash;
     };
 
     hash.change = function(callback) {
