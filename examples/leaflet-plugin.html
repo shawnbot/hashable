@@ -14,7 +14,7 @@
       }
 
       #map {
-        height: 400px;
+        height: 500px;
       }
     </style>
   </head>
@@ -22,15 +22,15 @@
     <div id="map"></div>
     <ul>
       <li><a href="#11/37.7691/-122.4399">San Francisco</a></li>
+      <li><a href="#13/37.8068/-122.2653">Oakland</a></li>
       <li><a href="#13/51.505/-0.09">London</a></li>
     </ul>
   </body>
   <script>
 
     var map = L.map("map")
-      map.setView([51.505, -0.09], 13);
-
-    new L.StamenTileLayer("toner").addTo(map);
+      .setView([51.505, -0.09], 13)
+      .addLayer(new L.StamenTileLayer("toner"));
 
     var hash = L.hash()
       .addTo(map)

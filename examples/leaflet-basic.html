@@ -14,7 +14,7 @@
       }
 
       #map {
-        height: 400px;
+        height: 500px;
       }
     </style>
   </head>
@@ -22,10 +22,15 @@
     <div id="map"></div>
     <ul>
       <li><a href="#11/37.7691/-122.4399">San Francisco</a></li>
+      <li><a href="#13/37.8068/-122.2653">Oakland</a></li>
       <li><a href="#13/51.505/-0.09">London</a></li>
     </ul>
   </body>
   <script>
+
+    var map = L.map("map")
+      .setView([37.7691, -122.4399], 11)
+      .addLayer(new L.StamenTileLayer("toner"));
 
     var hash = curio.hash()
       .format(curio.format.map())
@@ -34,9 +39,17 @@
         console.log("moving to:", data);
         map.setView([data.y, data.x], data.z);
       })
-      .enable();
+      .default(function() {
+        return {
+          z: map.getZoom(),
+          x: map.getCenter().lng,
+          y: map.getCenter().lat
+        };
+      })
+      .enable()
+      .check();
 
-    var map = L.map("map")
+    map
       .on("moveend", function() {
         var center = map.getCenter();
         hash.update({x: center.lng, y: center.lat})
@@ -46,14 +59,6 @@
         hash.update({z: map.getZoom()})
           .write();
       });
-
-    new L.StamenTileLayer("toner").addTo(map);
-
-    if (location.hash) {
-      hash.read();
-    } else {
-      map.setView([51.505, -0.09], 13);
-    }
 
   </script>
 </html>
