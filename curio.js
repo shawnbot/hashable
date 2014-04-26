@@ -152,7 +152,7 @@
     var format = function(data) {
       if (!data) data = {};
 
-      var used = [];
+      var used = [],
           str = fmt.replace(wordPattern, function(_, key) {
             return data[key];
           });
