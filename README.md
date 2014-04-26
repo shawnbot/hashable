@@ -47,52 +47,33 @@ fmt.parse("type/bar"); // {type: "bar"}
 
 **curio.format.map()** is made for slippy maps like [Leaflet](http://leafletjs.com). This allows you to save the center and zoom of the map (its location on the Earth) in the URL, allowing people to share specific views. This approach also allows you to link directly to map views with anchor tags, using an href in the format `#{zoom}/{lat}/{lng}`.
 
-```js
-var hash = curio.hash()
-  .format(curio.format.map())
-  .change(function(e) {
-    var data = e.data;
-    console.log("moving to:", data);
-    map.setView([data.y, data.x], data.z);
-  })
-  .enable();
+You can use the handy Leaflet plugin (bundled as of v1.3.0) like so:
 
+```html
 var map = L.map("map")
-  .on("moveend", function() {
-    var center = map.getCenter();
-    hash.update({x: center.lng, y: center.lat})
-      .write();
-  })
-  .on("zoomend", function() {
-    hash.update({z: map.getZoom()})
-      .write();
-  });
-
-new L.StamenTileLayer("toner").addTo(map);
-
-if (location.hash) {
-  hash.read();
-} else {
-  map.setView([51.505, -0.09], 13);
-}
+      .setView([37.7691, -122.4399], 11),
+    hash = L.hash()
+      .addTo(map)
+      .check();
 ```
 
-## Usage
+Or you can adapt the [standalone example](https://github.com/shawnbot/curio/blob/master/examples/leaflet-basic.html) to your favorite map engine.
 
-### Browser
+## Browser Usage
 
 Just drop [curio.js](https://raw.githubusercontent.com/shawnbot/curio/master/curio.js) (or the minified [curio.min.js](https://raw.githubusercontent.com/shawnbot/curio/master/curio.min.js)) into the `<head>` of your
 HTML document, and access it via the global `curio` object.
 
 ```
+<!DOCTYPE html>
 <html>
-<head>
-<script src="curio.js"></script>
-</head>
+  <head>
+    <script src="curio.js"></script>
+  </head>
 </html>
 ```
 
-### Node.js
+## Using with Node.js
 
 Just install via [npm](http://npmjs.org):
 
