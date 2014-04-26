@@ -98,7 +98,7 @@
       }
       onchange.call(hash, {
         previous: null,
-        data: data = def.call(hash),
+        data: data || data = def.call(hash),
         diff: curio.diff({}, data)
       });
       return hash.write();
