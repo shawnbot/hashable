@@ -1,6 +1,6 @@
 (function(curio) {
 
-  curio.version = "1.1.1";
+  curio.version = "1.2.0";
 
   curio.hash = function(loc) {
     if (!loc) loc = window.location;
