@@ -82,15 +82,9 @@ HTML document, and access it via the global `hashable` object.
 ```
 <!DOCTYPE html>
 <html>
-<<<<<<< HEAD
   <head>
-    <script src="curio.js"></script>
+    <script src="hashable.js"></script>
   </head>
-=======
-<head>
-<script src="hashable.js"></script>
-</head>
->>>>>>> rename to hashable
 </html>
 ```
 
