@@ -5,13 +5,25 @@
       .format(curio.format.map())
       .enable();
 
-    var moveend, zoomend, viewreset;
+    var moveend, zoomend, viewreset,
+        changed = false;
 
     hash.onAdd = function(map) {
       hash.change(function(e) {
         var view = e.data;
-        console.log("view:", view);
-        map.setView([view.y, view.x], view.z);
+        if (view) {
+          // console.log("view:", view);
+          map.setView([view.y, view.x], view.z,
+            changed ? null : {animate: false});
+          changed = true;
+        }
+      })
+      .default(function() {
+        return {
+          z: map.getZoom(),
+          x: map.getCenter().lng,
+          y: map.getCenter().lat
+        };
       })
       .enable();
 
