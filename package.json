@@ -8,6 +8,10 @@
     "build": "make"
   },
   "author": "Shawn Allen <shawn.allen@hush.com>",
+  "respository": {
+    "type": "git",
+    "url": "http://github.com/shawnbot/hashable.git"
+  },
   "license": "BSD-2-Clause",
   "dependencies": {
     "mocha": "~1.18.2",
