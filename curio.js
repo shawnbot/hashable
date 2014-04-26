@@ -183,6 +183,15 @@
     return format;
   };
 
+  /*
+   * path + query string formatter, creates data in the form:
+   *
+   * {path: "bit/after/hash", <query parameters>}
+   *
+   * e.g.:
+   *
+   * "#foo/bar?qux=1" -> {path: "foo/bar", qux: 1}
+   */
   curio.format.path = function() {
 
     var format = function(data) {
