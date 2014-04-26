@@ -1,4 +1,6 @@
 (function(curio) {
+  "use strict";
+  /* jshint -W014 */
 
   curio.version = "1.2.0";
 
@@ -340,8 +342,6 @@
       var keys = Object.keys(data)
         .filter(function(key) {
           return !curio.empty(data[key]);
-          return (data[key] !== null)
-              && (typeof data[key] !== "undefined");
         });
       if (sortKeys) {
         keys = keys.sort(function(a, b) {
@@ -404,10 +404,11 @@
   curio.diff = function(a, b) {
     var ak = Object.keys(a || {}),
         bk = Object.keys(b || {}),
-        diff = {};
+        diff = {},
+        key, i;
     while (ak.length) {
-      var key = ak.shift(),
-          i = bk.indexOf(key);
+      key = ak.shift();
+      i = bk.indexOf(key);
       if (i === -1) {
         diff[key] = {op: "remove", value: a[key]};
       } else if (b[key] != a[key]) {
@@ -418,7 +419,7 @@
       }
     }
     while (bk.length) {
-      var key = bk.shift();
+      key = bk.shift();
       diff[key] = {op: "add", value: b[key]};
     }
     return (Object.keys(diff).length > 0)
