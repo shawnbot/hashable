@@ -81,7 +81,7 @@ if (location.hash) {
 
 ### Browser
 
-Just drop [curio.js](https://raw.githubusercontent.com/shawnbot/curio/master/curio.js) (or the minified [curio.min.js](https://raw.githubusercontent.com/shawnbot/curio/master/curio.min.js) into the `<head>` of your
+Just drop [curio.js](https://raw.githubusercontent.com/shawnbot/curio/master/curio.js) (or the minified [curio.min.js](https://raw.githubusercontent.com/shawnbot/curio/master/curio.min.js)) into the `<head>` of your
 HTML document, and access it via the global `curio` object.
 
 ```
