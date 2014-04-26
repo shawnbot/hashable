@@ -8,12 +8,12 @@
     if (!loc) loc = window.location;
 
     var hash = {},
-        data = {},
+        data = null,
         current,
         format = curio.format.path(),
         parse = format.parse,
-        onchange = function() { },
-        def = function(prev) { return prev; };
+        onchange = function() { return; },
+        def = curio.functor({});
 
     hash.data = function(d) {
       if (!arguments.length) return data;
@@ -98,7 +98,7 @@
       }
       onchange.call(hash, {
         previous: null,
-        data: data,
+        data: data = def.call(hash),
         diff: curio.diff({}, data)
       });
       return hash.write();
