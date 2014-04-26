@@ -44,7 +44,7 @@ hash.check();
 
 `hashable.hash()` can use whatever parsing and formatting logic you throw at it, but it comes with some helpful primitives:
 
-**hashable.format.path()** is the default format, and it parses `location.hash` into an object like so:
+<a name="hashable.format.path" href="#hashable.format.path">#</a> **hashable.format.path()** is the default format, and it parses `location.hash` into an object like so:
 
 ```js
 var fmt = hashable.format.path();
@@ -54,7 +54,7 @@ fmt({path: "foo/bar", baz: "qux"}); // "foo/bar?baz=qux"
 fmt.parse("foo/bar?baz=qux"); // {path: "foo/bar", baz: "qux"}
 ```
 
-**hashable.format()** allows you to more specifically define a path format as a Mustache-like string:
+<a name="hashable.format" href="#hashable.format">#</a> **hashable.format()** allows you to more specifically define a path format as a Mustache-like string:
 
 ```js
 var fmt = hashable.format("type/{type}");
@@ -62,9 +62,9 @@ fmt({type: "foo"}); // "type/foo"
 fmt.parse("type/bar"); // {type: "bar"}
 ```
 
-**hashable.format.map()** is made for slippy maps like [Leaflet](http://leafletjs.com). This allows you to save the center and zoom of the map (its location on the Earth) in the URL, allowing people to share specific views. This approach also allows you to link directly to map views with anchor tags, using an href in the format `#{zoom}/{lat}/{lng}`.
+<a name="hashable.format.map" href="#hashable.format.map">#</a> **hashable.format.map()** is made for slippy maps like [Leaflet](http://leafletjs.com). This allows you to save the center and zoom of the map (its location on the Earth) in the URL, allowing people to share specific views. This approach also allows you to link directly to map views with anchor tags, using an href in the format `#{zoom}/{lat}/{lng}`.
 
-You can use the handy Leaflet plugin (bundled as of v1.3.0) like so:
+<a name="L.hash" href="#L.hash">#</a> You can use the handy **L.hash** Leaflet plugin (bundled as of v1.3.0) like so:
 
 ```js
 var map = L.map("map")
