@@ -85,6 +85,11 @@ HTML document, and access it via the global `hashable` object.
   <head>
     <script src="hashable.js"></script>
   </head>
+  <body>
+    <script>
+      var hash = hashable.hash();
+    </script>
+  </body>
 </html>
 ```
 
