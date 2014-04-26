@@ -1,10 +1,11 @@
 {
   "name": "curio",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "URL parsing and formatting, hash manipulation and more!",
   "main": "curio.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "build": "make"
   },
   "author": "Shawn Allen <shawn.allen@hush.com>",
   "license": "BSD-2-Clause",
