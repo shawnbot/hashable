@@ -79,6 +79,30 @@ describe("curio.format()", function() {
 
 });
 
+describe("curio.format.map()", function() {
+
+  it("should parse map coordinates", function() {
+    var fmt = curio.format.map();
+    assert.deepEqual(fmt.parse("5/10/12.4"), {
+      z: 5,
+      x: 10,
+      y: 12.4
+    });
+    assert.deepEqual(fmt.parse("5/-102.4/-13.800001"), {
+      z: 5,
+      x: -102.4,
+      y: -13.800001
+    });
+    assert.deepEqual(fmt.parse("5/102.4/13.8?style=toner"), {
+      z: 5,
+      x: 102.4,
+      y: 13.8,
+      style: "toner"
+    });
+  });
+
+});
+
 describe("curio.diff()", function() {
   it("properly compares empty objects", function() {
     assert.deepEqual(curio.diff(null, null), null);
