@@ -1,13 +1,13 @@
 minify ?= ./node_modules/uglify-js/bin/uglifyjs
 lint ?= jshint
 
-all: curio.min.js
+all: hashable.min.js
 
 %.min.js: %.js
 	$(minify) $< > $@
 
 lint:
-	$(lint) --verbose curio.js
+	$(lint) --verbose hashable.js
 
 clean:
 	rm -f *.min.js

@@ -1,8 +1,8 @@
 {
-  "name": "curio",
+  "name": "hashable",
   "version": "1.3.1",
-  "description": "URL parsing and formatting, hash manipulation and more!",
-  "main": "curio.js",
+  "description": "Browser hash manipulation, URL parsing, formatting, and more!",
+  "main": "hashable.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
     "build": "make"

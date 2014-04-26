@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>curio</title>
+    <title>hashable</title>
     <meta charset="utf-8">
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="../curio.js"></script>
+    <script src="../hashable.js"></script>
     <style>
       #state {
         width: 20em;
@@ -27,7 +27,7 @@
 
     var state = {},
         out = d3.select("#state"),
-        hash = curio.hash()
+        hash = hashable.hash()
           .change(function(e) {
             state = e.data;
             console.log("state:", state);

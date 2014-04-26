@@ -1,19 +1,19 @@
-(function(curio) {
+(function(hashable) {
   "use strict";
   /* jshint -W014 */
 
-  curio.version = "1.3.1";
+  hashable.version = "1.3.1";
 
-  curio.hash = function(loc) {
+  hashable.hash = function(loc) {
     if (!loc) loc = window.location;
 
     var hash = {},
         data = null,
         current,
-        format = curio.format.path(),
+        format = hashable.format.path(),
         parse = format.parse,
         onchange = function() { return; },
-        def = curio.functor({});
+        def = hashable.functor({});
 
     hash.data = function(d) {
       if (!arguments.length) return data;
@@ -22,7 +22,7 @@
     };
 
     hash.update = function(d) {
-      curio.extend(data, d);
+      hashable.extend(data, d);
       return hash;
     };
 
@@ -53,7 +53,7 @@
 
     hash.url = function(d, merge) {
       if (!arguments.length) d = data;
-      if (merge) d = curio.extend({}, data, d);
+      if (merge) d = hashable.extend({}, data, d);
       return "#" + format(d);
     };
 
@@ -74,13 +74,13 @@
     };
 
     hash.href = function(selection) {
-      selection.on("click.curio", function(d) {
+      selection.on("click.hashable", function(d) {
         this.href = hash.url(d);
       });
     };
 
     hash.href.merge = function(selection) {
-      selection.on("click.curio", function(d) {
+      selection.on("click.hashable", function(d) {
         this.href = hash.url(d, true);
       });
     };
@@ -99,14 +99,14 @@
       onchange.call(hash, {
         previous: null,
         data: data || data = def.call(hash),
-        diff: curio.diff({}, data)
+        diff: hashable.diff({}, data)
       });
       return hash.write();
     };
 
     hash.default = function(d) {
       if (!arguments.length) return def;
-      def = curio.functor(d);
+      def = hashable.functor(d);
       return hash;
     };
 
@@ -121,7 +121,7 @@
             return hash.write();
           }
         }
-        var diff = curio.diff(data, previous);
+        var diff = hashable.diff(data, previous);
         if (diff) {
           onchange.call(hash, {
             data: data,
@@ -135,7 +135,7 @@
     return hash;
   };
 
-  curio.format = function(fmt) {
+  hashable.format = function(fmt) {
     if (!fmt) fmt = "";
 
     var query = false,
@@ -164,7 +164,7 @@
           return keys.indexOf(key) === -1;
         });
       return qkeys.length
-        ? [str, curio.qs.format(curio.copy(data, qkeys))].join("?")
+        ? [str, hashable.qs.format(hashable.copy(data, qkeys))].join("?")
         : str;
     };
 
@@ -180,17 +180,17 @@
       if (query) {
         var bits = str.split("?", 2);
         str = bits[0];
-        qdata = curio.qs.parse(bits[1]);
+        qdata = hashable.qs.parse(bits[1]);
         if (qdata) {
           if (Array.isArray(query)) {
-            qdata = curio.copy(qdata, query);
+            qdata = hashable.copy(qdata, query);
           } else {
             // copy only the keys that aren't in the format
             var qkeys = Object.keys(qdata)
               .filter(function(key) {
                 return keys.indexOf(key) === -1;
               });
-            qdata = curio.copy(qdata, qkeys);
+            qdata = hashable.copy(qdata, qkeys);
           }
         }
       }
@@ -200,7 +200,7 @@
         keys.forEach(function(key, i) {
           data[key] = match[i + 1];
         });
-        if (qdata) curio.extend(data, qdata);
+        if (qdata) hashable.extend(data, qdata);
         return data;
       }
       return null;
@@ -228,13 +228,13 @@
    *
    * "#foo/bar?qux=1" -> {path: "foo/bar", qux: 1}
    */
-  curio.format.path = function() {
+  hashable.format.path = function() {
 
     var format = function(data) {
-      data = curio.extend({}, data);
+      data = hashable.extend({}, data);
       var path = data.path || "";
       delete data.path;
-      var query = curio.qs.format(data);
+      var query = hashable.qs.format(data);
       return query
         ? [path, query].join("?")
         : path;
@@ -248,9 +248,9 @@
       var bits = str.split("?", 2),
           data = {path: bits[0]};
       if (bits.length > 1) {
-        var query = curio.qs.parse(bits[1]);
+        var query = hashable.qs.parse(bits[1]);
         if (query) {
-          return curio.extend(data, query);
+          return hashable.extend(data, query);
         }
       }
       return data;
@@ -259,15 +259,15 @@
     return format;
   };
 
-  curio.format.map = function() {
-    var fmt = curio.format("{z}/{y}/{x}")
+  hashable.format.map = function() {
+    var fmt = hashable.format("{z}/{y}/{x}")
           .query(true),
         precision = function(z) {
           return Math.max(0, Math.ceil(Math.log(z) / Math.LN2));
         };
 
     var format = function(data) {
-      if (data && !curio.empty(data.z)) {
+      if (data && !hashable.empty(data.z)) {
         var p = precision(+data.z);
         data.x = (+data.x).toFixed(p);
         data.y = (+data.y).toFixed(p);
@@ -298,7 +298,7 @@
 
     format.precision = function(p) {
       if (!arguments.length) return precision;
-      precision = curio.functor(p);
+      precision = hashable.functor(p);
       return format;
     };
 
@@ -308,7 +308,7 @@
   /*
    * query string parse & format
    */
-  curio.qs = (function() {
+  hashable.qs = (function() {
     var qs = {
       separator: "&",
     };
@@ -341,7 +341,7 @@
 
       var keys = Object.keys(data)
         .filter(function(key) {
-          return !curio.empty(data[key]);
+          return !hashable.empty(data[key]);
         });
       if (sortKeys) {
         keys = keys.sort(function(a, b) {
@@ -377,7 +377,7 @@
   /*
    * extend an object with one or more other objects' keys
    */
-  curio.extend = function(a, b, etc) {
+  hashable.extend = function(a, b, etc) {
     [].slice.call(arguments, 1).forEach(function(o) {
       if (!o) return;
       for (var key in o) {
@@ -401,7 +401,7 @@
    * {op: "add", value: <value>}
    * a key was set in the second object but not the first.
    */
-  curio.diff = function(a, b) {
+  hashable.diff = function(a, b) {
     var ak = Object.keys(a || {}),
         bk = Object.keys(b || {}),
         diff = {},
@@ -427,7 +427,7 @@
       : null;
   };
 
-  curio.copy = function(obj, keys) {
+  hashable.copy = function(obj, keys) {
     var copy = {};
     keys.forEach(function(key) {
       if (key in obj) copy[key] = obj[key];
@@ -435,13 +435,13 @@
     return copy;
   };
 
-  curio.empty = function(d) {
+  hashable.empty = function(d) {
     return (d === null)
         || (typeof d === "undefined")
         || d.length === 0;
   };
 
-  curio.functor = function(d) {
+  hashable.functor = function(d) {
     return (typeof d === "function")
       ? d
       : function() { return d; };
@@ -453,8 +453,8 @@
    */
   if (typeof L === "object") {
     L.Hash = L.hash = function() {
-      var hash = curio.hash()
-        .format(curio.format.map())
+      var hash = hashable.hash()
+        .format(hashable.format.map())
         .enable();
 
       var moveend, zoomend, viewreset,
@@ -516,4 +516,4 @@
 
   } // end Leaflet support
 
-})(typeof module === "object" ? module.exports : this.curio = {});
+})(typeof module === "object" ? module.exports : this.hashable = {});

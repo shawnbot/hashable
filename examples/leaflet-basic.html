@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>curio</title>
+    <title>hashable</title>
     <meta charset="utf-8">
-    <script src="../curio.js"></script>
+    <script src="../hashable.js"></script>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css">
     <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
     <script src="http://maps.stamen.com/js/tile.stamen.js"></script>
@@ -32,8 +32,8 @@
       .setView([37.7691, -122.4399], 11)
       .addLayer(new L.StamenTileLayer("toner"));
 
-    var hash = curio.hash()
-      .format(curio.format.map())
+    var hash = hashable.hash()
+      .format(hashable.format.map())
       .change(function(e) {
         var data = e.data;
         console.log("moving to:", data);

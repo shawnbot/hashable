@@ -1,14 +1,14 @@
-# curio
+# hashable
 
-URI parsing, formatting, and hash manipulations in the browser!
+Save and restore state in the browser's `location.hash`, parse and format URLs, and more!
 
 ## Hash manipulation
 
-Curio can manipulate the browser's location hash, allowing you to read and write state to the URL without reloading the page:
+Hashable can manipulate the browser's location hash, allowing you to read and write state to the URL without reloading the page:
 
 ```js
 // create your hash manipulator and add a change listener
-var hash = curio.hash()
+var hash = hashable.hash()
   .change(function(e) {
     console.log("hash data:", e.data);
   })
@@ -40,31 +40,31 @@ hash.check();
 
 ### Parsers and Formatters
 
-`curio.hash()` can use whatever parsing and formatting logic you throw at it, but it comes with some helpful primitives:
+`hashable.hash()` can use whatever parsing and formatting logic you throw at it, but it comes with some helpful primitives:
 
-**curio.format.path()** is the default format, and it parses `location.hash` into an object like so:
+**hashable.format.path()** is the default format, and it parses `location.hash` into an object like so:
 
 ```js
-var fmt = curio.format.path();
+var fmt = hashable.format.path();
 fmt({path: "foo/bar"}); // "foo/bar"
 fmt.parse("foo/bar"); // {path: "foo/bar"}
 fmt({path: "foo/bar", baz: "qux"}); // "foo/bar?baz=qux"
 fmt.parse("foo/bar?baz=qux"); // {path: "foo/bar", baz: "qux"}
 ```
 
-**curio.format()** allows you to more specifically define a path format as a Mustache-like string:
+**hashable.format()** allows you to more specifically define a path format as a Mustache-like string:
 
 ```js
-var fmt = curio.format("type/{type}");
+var fmt = hashable.format("type/{type}");
 fmt({type: "foo"}); // "type/foo"
 fmt.parse("type/bar"); // {type: "bar"}
 ```
 
-**curio.format.map()** is made for slippy maps like [Leaflet](http://leafletjs.com). This allows you to save the center and zoom of the map (its location on the Earth) in the URL, allowing people to share specific views. This approach also allows you to link directly to map views with anchor tags, using an href in the format `#{zoom}/{lat}/{lng}`.
+**hashable.format.map()** is made for slippy maps like [Leaflet](http://leafletjs.com). This allows you to save the center and zoom of the map (its location on the Earth) in the URL, allowing people to share specific views. This approach also allows you to link directly to map views with anchor tags, using an href in the format `#{zoom}/{lat}/{lng}`.
 
 You can use the handy Leaflet plugin (bundled as of v1.3.0) like so:
 
-```html
+```js
 var map = L.map("map")
       .setView([37.7691, -122.4399], 11),
     hash = L.hash()
@@ -76,15 +76,21 @@ Or you can adapt the [standalone example](https://github.com/shawnbot/curio/blob
 
 ## Browser Usage
 
-Just drop [curio.js](https://raw.githubusercontent.com/shawnbot/curio/master/curio.js) (or the minified [curio.min.js](https://raw.githubusercontent.com/shawnbot/curio/master/curio.min.js)) into the `<head>` of your
-HTML document, and access it via the global `curio` object.
+Just drop [hashable.js](https://raw.githubusercontent.com/shawnbot/hashable/master/hashable.js) (or the minified [hashable.min.js](https://raw.githubusercontent.com/shawnbot/hashable/master/hashable.min.js)) into the `<head>` of your
+HTML document, and access it via the global `hashable` object.
 
 ```
 <!DOCTYPE html>
 <html>
+<<<<<<< HEAD
   <head>
     <script src="curio.js"></script>
   </head>
+=======
+<head>
+<script src="hashable.js"></script>
+</head>
+>>>>>>> rename to hashable
 </html>
 ```
 
@@ -93,11 +99,11 @@ HTML document, and access it via the global `curio` object.
 Just install via [npm](http://npmjs.org):
 
 ```sh
-$ npm install curio
+$ npm install hashable
 ```
 
 and require away:
 
 ```
-var curio = require("curio");
+var hashable = require("hashable");
 ```

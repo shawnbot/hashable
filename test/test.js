@@ -1,16 +1,16 @@
-var curio = require("../curio"),
+var hashable = require("../hashable"),
     assert = require("assert");
 
-describe("curio.format()", function() {
+describe("hashable.format()", function() {
 
   describe("#match()", function() {
     it("should match an empty string", function() {
-      var empty = curio.format("");
+      var empty = hashable.format("");
       assert.notEqual(empty.match(""), null);
     });
 
     it("should match a single word component", function() {
-      var single = curio.format("{foo}"),
+      var single = hashable.format("{foo}"),
           match = single.match("bar");
       assert.notEqual(match, null);
       assert.equal(match.length, 2);
@@ -18,7 +18,7 @@ describe("curio.format()", function() {
     });
 
     it("should match two word components", function() {
-      var double = curio.format("{foo}/{bar}"),
+      var double = hashable.format("{foo}/{bar}"),
           match = double.match("baz/qux");
       assert.notEqual(match, null);
       assert.equal(match.length, 3);
@@ -28,17 +28,17 @@ describe("curio.format()", function() {
 
   describe("#parse()", function() {
     it("should parse an empty string", function() {
-      var empty = curio.format("");
+      var empty = hashable.format("");
       assert.deepEqual(empty.parse(""), {});
     });
 
     it("should parse a single word component", function() {
-      var single = curio.format("{foo}");
+      var single = hashable.format("{foo}");
       assert.deepEqual(single.parse("bar"), {foo: "bar"});
     });
 
     it("should parse two word components", function() {
-      var double = curio.format("{foo}/{bar}");
+      var double = hashable.format("{foo}/{bar}");
       assert.deepEqual(double.parse("apple/orange"), {
         foo: "apple",
         bar: "orange"
@@ -46,7 +46,7 @@ describe("curio.format()", function() {
     });
 
     it("should parse two word components surrounded by other words", function() {
-      var complex = curio.format("kingdom/{kingdom}/phylum/{phylum}");
+      var complex = hashable.format("kingdom/{kingdom}/phylum/{phylum}");
       assert.deepEqual(complex.parse("kingdom/Plant/phylum/Ginkgophyta"), {
         kingdom: "Plant",
         phylum: "Ginkgophyta"
@@ -56,12 +56,12 @@ describe("curio.format()", function() {
 
   describe("#query()", function() {
     it("should not parse query strings by default", function() {
-      var fmt = curio.format("/some/{foo}");
+      var fmt = hashable.format("/some/{foo}");
       assert.equal(fmt.parse("/some/blah?bar=2"), null);
     });
 
     it("should parse query strings", function() {
-      var fmt = curio.format("/some/{foo}").query(true);
+      var fmt = hashable.format("/some/{foo}").query(true);
       assert.deepEqual(fmt.parse("/some/blah?bar=2"), {
         foo: "blah",
         bar: 2
@@ -69,7 +69,7 @@ describe("curio.format()", function() {
     });
 
     it("should not override format components with query variables", function() {
-      var fmt = curio.format("/some/{foo}").query(true);
+      var fmt = hashable.format("/some/{foo}").query(true);
       assert.deepEqual(fmt.parse("/some/blah?foo=2"), {
         foo: "blah"
       });
@@ -79,10 +79,10 @@ describe("curio.format()", function() {
 
 });
 
-describe("curio.format.map()", function() {
+describe("hashable.format.map()", function() {
 
   it("should parse map coordinates", function() {
-    var fmt = curio.format.map();
+    var fmt = hashable.format.map();
     assert.deepEqual(fmt.parse("5/10/12.4"), {
       z: 5,
       y: 10,
@@ -103,37 +103,37 @@ describe("curio.format.map()", function() {
 
 });
 
-describe("curio.diff()", function() {
+describe("hashable.diff()", function() {
   it("properly compares empty objects", function() {
-    assert.deepEqual(curio.diff(null, null), null);
-    assert.deepEqual(curio.diff(null, {}), null);
-    assert.deepEqual(curio.diff({}, null), null);
-    assert.deepEqual(curio.diff({}, {}), null);
+    assert.deepEqual(hashable.diff(null, null), null);
+    assert.deepEqual(hashable.diff(null, {}), null);
+    assert.deepEqual(hashable.diff({}, null), null);
+    assert.deepEqual(hashable.diff({}, {}), null);
   });
 
   it("properly detects a removed key", function() {
-    assert.deepEqual(curio.diff({foo: "bar"}, {}), {
+    assert.deepEqual(hashable.diff({foo: "bar"}, {}), {
       foo: {op: "remove", value: "bar"}
     });
-    assert.deepEqual(curio.diff({foo: "bar", baz: 1}, {baz: 1}), {
+    assert.deepEqual(hashable.diff({foo: "bar", baz: 1}, {baz: 1}), {
       foo: {op: "remove", value: "bar"}
     });
   });
 
   it("properly detects an added key", function() {
-    assert.deepEqual(curio.diff({}, {foo: "bar"}), {
+    assert.deepEqual(hashable.diff({}, {foo: "bar"}), {
       foo: {op: "add", value: "bar"}
     });
-    assert.deepEqual(curio.diff({baz: 1}, {foo: "bar", baz: 1}), {
+    assert.deepEqual(hashable.diff({baz: 1}, {foo: "bar", baz: 1}), {
       foo: {op: "add", value: "bar"}
     });
   });
 
   it("properly detects a changed key", function() {
-    assert.deepEqual(curio.diff({foo: "bar"}, {foo: "baz"}), {
+    assert.deepEqual(hashable.diff({foo: "bar"}, {foo: "baz"}), {
       foo: {op: "change", value: ["bar", "baz"]}
     });
-    assert.deepEqual(curio.diff({foo: "a", baz: 1}, {foo: "b", baz: 2}), {
+    assert.deepEqual(hashable.diff({foo: "a", baz: 1}, {foo: "b", baz: 2}), {
       foo: {op: "change", value: ["a", "b"]},
       baz: {op: "change", value: [1, 2]}
     });
@@ -142,15 +142,15 @@ describe("curio.diff()", function() {
 });
 
 
-describe("curio.hash()", function() {
+describe("hashable.hash()", function() {
 
   // jsdom rules.
   var jsdom = require("jsdom");
 
-  jsdom.env("./hash.html", ["../curio.js"], function(errors, window) {
+  jsdom.env("./hash.html", ["../hashable.js"], function(errors, window) {
 
     it("should fire change events", function(done) {
-      var hash = window.curio.hash()
+      var hash = window.hashable.hash()
         .change(function(e) {
           assert.deepEqual(e.data, {path: "foo"});
           done();
@@ -159,7 +159,7 @@ describe("curio.hash()", function() {
     });
 
     it("should change the hash", function() {
-      var hash = window.curio.hash()
+      var hash = window.hashable.hash()
         .data({path: "foo", bar: 1})
         .write();
       assert.equal(window.location.hash, "foo?bar=1");
@@ -167,13 +167,13 @@ describe("curio.hash()", function() {
 
     it("should read the hash", function() {
       location.hash = "?bar=2";
-      var hash = window.curio.hash()
+      var hash = window.hashable.hash()
         .read();
       assert.deepEqual(hash.data(), {path: "", bar: 2});
     });
 
     it("should disable and re-enable itself", function(done) {
-      var hash = window.curio.hash()
+      var hash = window.hashable.hash()
         .change(function(e) {
           throw "This should be disabled.";
         })
