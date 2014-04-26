@@ -28,18 +28,14 @@
   </body>
   <script>
 
-    var map = L.map("map");
+    var map = L.map("map")
+      map.setView([51.505, -0.09], 13);
 
     new L.StamenTileLayer("toner").addTo(map);
 
     var hash = L.hash()
-      .addTo(map);
-
-    if (location.hash) {
-      hash.read();
-    } else {
-      map.setView([51.505, -0.09], 13);
-    }
+      .addTo(map)
+      .check();
 
   </script>
 </html>
