@@ -10,7 +10,8 @@
         current,
         format = curio.format.path(),
         parse = format.parse,
-        onchange = function() { };
+        onchange = function() { },
+        def = function(prev) { return prev; };
 
     hash.data = function(d) {
       if (!arguments.length) return data;
@@ -76,14 +77,35 @@
       });
     };
 
-    hash.href.parse = function(d) {
-      return parse(this.getAttribute("href").substr(1));
-    };
-
     hash.href.merge = function(selection) {
       selection.on("click.curio", function(d) {
         this.href = hash.url(d, true);
       });
+    };
+
+    hash.href.parse = function(d) {
+      return parse(this.getAttribute("href").substr(1));
+    };
+
+    hash.check = function() {
+      if (loc.hash) {
+        // console.log("reading:", loc.hash);
+        return hash.read();
+      } else {
+        // console.log("updating...");
+      }
+      onchange.call(hash, {
+        previous: null,
+        data: data,
+        diff: curio.diff({}, data)
+      });
+      return hash.write();
+    };
+
+    hash.default = function(d) {
+      if (!arguments.length) return def;
+      def = curio.functor(d);
+      return hash;
     };
 
     function change() {
@@ -91,6 +113,12 @@
       if (loc.hash != current) {
         var previous = data;
         data = parse.call(loc, loc.hash.substr(1));
+        if (!data && def) {
+          data = def.call(hash, previous);
+          if (data != previous) {
+            return hash.write();
+          }
+        }
         var diff = curio.diff(data, previous);
         if (diff) {
           onchange.call(hash, {
@@ -120,6 +148,8 @@
     // console.log("pattern:", pattern, "keys:", keys);
 
     var format = function(data) {
+      if (!data) data = {};
+
       var used = [];
           str = fmt.replace(wordPattern, function(_, key) {
             return data[key];
@@ -235,8 +265,8 @@
         };
 
     var format = function(data) {
-      if (data.z) {
-        var p = precision(data.z);
+      if (data && !curio.empty(data.z)) {
+        var p = precision(+data.z);
         data.x = (+data.x).toFixed(p);
         data.y = (+data.y).toFixed(p);
       }
@@ -247,9 +277,14 @@
 
     format.parse = function(str) {
       var parsed = fmt.parse(str);
-      parsed.z = +parsed.z;
-      parsed.x = +parsed.x;
-      parsed.y = +parsed.y;
+      if (parsed) {
+        parsed.z = +parsed.z;
+        parsed.x = +parsed.x;
+        parsed.y = +parsed.y;
+        if (isNaN(parsed.z) || isNaN(parsed.x) || isNaN(parsed.y)) {
+          return null;
+        }
+      }
       return parsed;
     };
 
