@@ -45,7 +45,7 @@ fmt({type: "foo"}); // "type/foo"
 fmt.parse("type/bar"); // {type: "bar"}
 ```
 
-**curio.format.map()** is made for slippy maps like [Leaflet](http://leafletjs.com). The nice thing about this approach is that you can link to points on the map by adding an anchor to your page with an href in the format `{zoom}/{l:
+**curio.format.map()** is made for slippy maps like [Leaflet](http://leafletjs.com). This allows you to save the center and zoom of the map (its location on the Earth) in the URL, allowing people to share specific views. This approach also allows you to link directly to map views with anchor tags, using an href in the format `#{zoom}/{lat}/{lng}`.
 
 ```js
 var hash = curio.hash()
