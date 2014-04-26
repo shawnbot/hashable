@@ -2,6 +2,8 @@
 
 Save and restore state in the browser's `location.hash`, parse and format URLs, and more!
 
+[![Build Status](https://travis-ci.org/shawnbot/hashable.svg?branch=master)](https://travis-ci.org/shawnbot/hashable)
+
 ## Hash manipulation
 
 Hashable can manipulate the browser's location hash, allowing you to read and write state to the URL without reloading the page:
