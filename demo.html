@@ -38,8 +38,7 @@
       .datum(hash.href.parse)
       .call(hash.href.merge);
 
-    d3.select(window).call(hash);
-    hash.read();
+    hash.enable().read();
 
   </script>
 </html>
