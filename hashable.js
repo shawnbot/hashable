@@ -2,7 +2,7 @@
   "use strict";
   /* jshint -W014 */
 
-  hashable.version = "1.4.2";
+  hashable.version = "1.4.3";
 
   hashable.hash = function(loc) {
     if (!loc) loc = window.location;
