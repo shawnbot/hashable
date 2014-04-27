@@ -20,7 +20,7 @@
     "url": "http://github.com/shawnbot/hashable.git"
   },
   "license": "BSD-2-Clause",
-  "dependencies": {
+  "devDependencies": {
     "mocha": "~1.18.2",
     "jsdom": "~0.10.5",
     "uglify-js": "~2.4.13"
