@@ -21,6 +21,15 @@
       return hash;
     };
 
+    hash.set = function(d) {
+      if (typeof d === "string") {
+        loc.hash = d;
+        return hash;
+      } else {
+        return hash.data(d).write();
+      }
+    };
+
     hash.update = function(d) {
       hashable.extend(data, d);
       return hash;
