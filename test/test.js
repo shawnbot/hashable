@@ -236,6 +236,34 @@ describe("hashable.hash()", function() {
       location.hash = "path/to/foo?bar=qux";
     });
 
+    it("should get the hash right on check()", function(done) {
+      window.location.hash = "name/shawn";
+      var hash = window.hashable.hash()
+        .format("name/{name}")
+        .default({
+          name: "joe"
+        })
+        .change(function(e) {
+          assert.equal(e.data.name, "shawn");
+          done();
+        })
+        .check();
+    });
+
+    it("should use default data in check() if there's no hash", function(done) {
+      window.location.hash = "";
+      var hash = window.hashable.hash()
+        .format("name/{name}")
+        .default({
+          name: "shawn"
+        })
+        .change(function(e) {
+          assert.equal(e.data.name, "shawn");
+          done();
+        })
+        .check();
+    });
+
   });
 
 });
