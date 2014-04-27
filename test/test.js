@@ -109,6 +109,48 @@ describe("hashable.format.map()", function() {
       y: 35.4,
       x: -122.2
     });
+
+    // note that zoom 10 = 4-digit precision
+    assert.deepEqual(fmt.parse("watercolor/10/35.4/-122.2?overlay=blah"), {
+      layer: "watercolor",
+      z: 10,
+      y: 35.4,
+      x: -122.2,
+      overlay: "blah"
+    });
+
+    // note that zoom 10 = 4-digit precision
+    assert.deepEqual(fmt.parse("watercolor/10/35.4/-122.2?overlay=blah"), {
+      layer: "watercolor",
+      z: 10,
+      y: 35.4,
+      x: -122.2,
+      overlay: "blah"
+    });
+
+    assert.equal(fmt({
+      layer: "watercolor",
+      z: 10,
+      y: 35.4,
+      x: -122.2,
+      overlay: "blah"
+    }), "watercolor/10/35.4000/-122.2000?overlay=blah");
+  });
+
+  it("should respect precision settings", function() {
+    var fmt = hashable.format.map().precision(1);
+    assert.deepEqual(fmt({
+      z: 10,
+      y: 35.4301,
+      x: -122.256
+    }), "10/35.4/-122.3");
+
+    fmt.precision(4);
+    assert.deepEqual(fmt({
+      z: 10,
+      y: 35.4301,
+      x: -122.256
+    }), "10/35.4301/-122.2560");
   });
 });
 
