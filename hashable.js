@@ -38,6 +38,9 @@
 
     hash.format = function(fmt) {
       if (!arguments.length) return format;
+      if (typeof fmt === "string") {
+        fmt = hashable.format(fmt);
+      }
       format = fmt;
       if (typeof format.parse === "function") {
         parse = format.parse;
