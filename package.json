@@ -1,6 +1,6 @@
 {
   "name": "hashable",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Browser hash manipulation, URL parsing, formatting, and more!",
   "keywords": [
     "hash",
