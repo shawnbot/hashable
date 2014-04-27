@@ -259,8 +259,8 @@
     return format;
   };
 
-  hashable.format.map = function() {
-    var fmt = hashable.format("{z}/{y}/{x}")
+  hashable.format.map = function(f) {
+    var fmt = hashable.format(f || "{z}/{y}/{x}")
           .query(true),
         precision = function(z) {
           return Math.max(0, Math.ceil(Math.log(z) / Math.LN2));
@@ -275,7 +275,9 @@
       return fmt(data);
     };
 
-    format.match = fmt.match;
+    format.match = function(str) {
+      return fmt.match(str);
+    };
 
     format.parse = function(str) {
       var parsed = fmt.parse(str);

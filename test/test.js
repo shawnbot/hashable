@@ -101,6 +101,15 @@ describe("hashable.format.map()", function() {
     });
   });
 
+  it("should accept other alternative formats", function() {
+    var fmt = hashable.format.map("{layer}/{z}/{y}/{x}");
+    assert.deepEqual(fmt.parse("watercolor/10/35.4/-122.2"), {
+      layer: "watercolor",
+      z: 10,
+      y: 35.4,
+      x: -122.2
+    });
+  });
 });
 
 describe("hashable.diff()", function() {
