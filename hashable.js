@@ -13,7 +13,7 @@
         format = hashable.format.path(),
         parse = format.parse,
         onchange = function() { return; },
-        def = hashable.functor({});
+        def = hashable.functor(null);
 
     hash.data = function(d) {
       if (!arguments.length) return data;
