@@ -133,7 +133,7 @@
             return hash.write();
           }
         }
-        var diff = hashable.diff(data, previous);
+        var diff = hashable.diff(previous, data);
         if (diff) {
           onchange.call(hash, {
             data: data,
