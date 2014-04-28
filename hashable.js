@@ -35,7 +35,7 @@
       return hash;
     };
 
-    hash.write = function(d) {
+    hash.write = function() {
       loc.hash = format(data);
       return hash;
     };
@@ -141,6 +141,7 @@
             diff: diff
           });
         }
+        current = loc.hash;
       }
     }
 
