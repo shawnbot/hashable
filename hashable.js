@@ -483,6 +483,7 @@
             map.setView([view.y, view.x], view.z,
               changed ? null : {animate: false});
             changed = true;
+            map.fireEvent("hashchange", e);
           }
         })
         .default(function() {
