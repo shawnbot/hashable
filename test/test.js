@@ -1,5 +1,6 @@
 var hashable = require("../hashable"),
-    assert = require("assert");
+    assert = require("assert"),
+    jsdom = require("jsdom");
 
 describe("hashable.format()", function() {
 
@@ -196,8 +197,7 @@ describe("hashable.diff()", function() {
 describe("hashable.hash()", function() {
 
   // jsdom rules.
-  var jsdom = require("jsdom"),
-      tests = [],
+  var tests = [],
       window;
 
   jsdom.env("./hash.html", ["../hashable.js"], function(errors, win) {
