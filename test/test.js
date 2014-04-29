@@ -225,6 +225,7 @@ describe("hashable.hash()", function() {
       })
       .enable();
     window.location.hash = "foo";
+    process.nextTick(hash.disable);
   });
 
   wit("should change the hash", function(done) {
@@ -257,6 +258,7 @@ describe("hashable.hash()", function() {
       })
       .enable();
     window.location.hash = "path/to/foo?bar=qux";
+    process.nextTick(hash.disable);
   });
 
   wit("should get the hash right on check()", function(done) {
@@ -269,6 +271,43 @@ describe("hashable.hash()", function() {
       .change(function(e) {
         assert.equal(e.data.name, "shawn");
         done();
+      })
+      .check();
+  });
+
+  wit("should rewrite invalid fragment identifiers (by default)", function(done) {
+    window.location.hash = "foo";
+
+    var div = window.document.createElement("div");
+    div.id = "foo";
+    window.document.querySelector("body").appendChild(div);
+
+    var hash = window.hashable.hash()
+      .format("name/{name}")
+      .default({
+        name: "shawn"
+      })
+      .change(function(e) {
+        if (!e.data || e.data.name !== "shawn") {
+          throw "We should have data here: " + e.url;
+        }
+        done();
+      })
+      .check();
+  });
+
+  wit("shouldn't rewrite valid fragment identifiers", function(done) {
+    window.location.hash = "foo";
+
+    var div = window.document.createElement("div");
+    div.id = "foo";
+    window.document.querySelector("body").appendChild(div);
+
+    var hash = window.hashable.hash()
+      .format("name/{name}")
+      .valid(window.hashable.validFragment)
+      .change(function(e) {
+        if (e.url === "foo" && !e.data) done();
       })
       .check();
   });
