@@ -110,7 +110,7 @@
       }
       onchange.call(hash, {
         previous: null,
-        data: data || data = def.call(hash),
+        data: data || (data = def.call(hash)),
         diff: hashable.diff({}, data)
       });
       return hash.write();
