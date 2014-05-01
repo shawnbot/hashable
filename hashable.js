@@ -13,7 +13,9 @@
         format = hashable.format.path(),
         parse = format.parse,
         onchange = function() { return; },
-        def = hashable.functor(null);
+        def = hashable.functor(null),
+        valid = hashable.functor(false),
+        writing = false;
 
     hash.data = function(d) {
       if (!arguments.length) return data;
@@ -36,7 +38,9 @@
     };
 
     hash.write = function() {
+      writing = true;
       loc.hash = format(data);
+      writing = false;
       return hash;
     };
 
@@ -85,6 +89,12 @@
       return hash;
     };
 
+    hash.valid = function(f) {
+      if (!arguments.length) return valid;
+      valid = hashable.functor(f);
+      return hash;
+    };
+
     hash.href = function(selection) {
       selection.on("click.hashable", function(d) {
         this.href = hash.url(d);
@@ -123,29 +133,37 @@
     };
 
     function change() {
+      // prevent recursive change callbacks
+      if (writing) return;
+
       // console.log("change():", current, "->", loc.hash);
-      if (loc.hash != current) {
+      var url = loc.hash.substr(1);
+      if (url != current) {
         var previous = data;
-        data = parse.call(loc, loc.hash.substr(1));
-        if (!data && def) {
+        data = parse.call(hash, url);
+        if (!data && valid.call(format, url)) {
+          // console.warn("valid:", url);
+        } else if (!data && def) {
           data = def.call(hash, previous);
-          if (data != previous) {
-            return hash.write();
-          }
+          hash.write();
+          url = loc.hash.substr(1);
         }
         var diff = hashable.diff(previous, data);
-        if (diff) {
-          onchange.call(hash, {
-            data: data,
-            previous: previous,
-            diff: diff
-          });
-        }
-        current = loc.hash;
+        onchange.call(hash, {
+          url:      url,
+          data:     data,
+          previous: previous,
+          diff:     diff
+        });
+        current = url;
       }
     }
 
     return hash;
+  };
+
+  hashable.validFragment = function(fragment) {
+    return !!document.getElementById(fragment);
   };
 
   hashable.format = function(fmt) {

@@ -225,6 +225,7 @@ describe("hashable.hash()", function() {
       })
       .enable();
     window.location.hash = "foo";
+    process.nextTick(hash.disable);
   });
 
   wit("should change the hash", function(done) {
@@ -257,6 +258,7 @@ describe("hashable.hash()", function() {
       })
       .enable();
     window.location.hash = "path/to/foo?bar=qux";
+    process.nextTick(hash.disable);
   });
 
   wit("should get the hash right on check()", function(done) {
@@ -273,8 +275,6 @@ describe("hashable.hash()", function() {
       .check();
   });
 
-  /*
-  // FIXME
   wit("should use default data in check() if there's no hash", function(done) {
     window.location.hash = "";
     var hash = window.hashable.hash()
@@ -287,8 +287,67 @@ describe("hashable.hash()", function() {
         done();
       })
       .check();
-    console.log("checked");
   });
-  */
+
+  describe("should handle fragment identifiers properly", function() {
+
+    var div,
+        hash;
+
+    wit("shouldn't set data for valid fragment identifiers", function(done) {
+      div = window.document.createElement("div");
+      div.id = "help";
+      window.document.querySelector("body").appendChild(div);
+
+      window.location.hash = "help";
+
+      hash = window.hashable.hash()
+        .format("widget/{widget}")
+        .valid(window.hashable.validFragment)
+        .default({
+          widget: "foo"
+        })
+        .change(function(e) {
+          assert.equal(e.url, "help");
+          assert.equal(e.data, null);
+          done();
+        })
+        .check();
+    });
+
+    wit("should set default data for a bad hash", function(done) {
+      hash
+        .change(function(e) {
+          assert.deepEqual(e.data, {widget: "foo"});
+          done();
+        })
+        .enable();
+      window.location.hash = "wadget";
+      process.nextTick(hash.disable);
+    });
+
+    wit("should still parse the format", function(done) {
+      hash
+        .change(function(e) {
+          assert.deepEqual(e.data, {widget: "bar"});
+          done();
+        })
+        .enable();
+      window.location.hash = "widget/bar";
+      process.nextTick(hash.disable);
+    });
+
+    wit("shouldn't respect fragment identifiers for missing elements", function(done) {
+      div.parentNode.removeChild(div);
+      hash
+        .change(function(e) {
+          assert.deepEqual(e.data, {widget: "foo"});
+          done();
+        })
+        .enable();
+      window.location.hash = "help";
+      process.nextTick(hash.disable);
+    });
+  });
 
 });
