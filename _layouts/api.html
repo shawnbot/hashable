@@ -1,0 +1,22 @@
+---
+layout: default
+---
+
+<h1>hashable: API reference</h1>
+<div class="row">
+  <div id="reference" class="col-md-8">
+    {{ content }}
+  </div>
+  <div id="toc" class="col-md-4">
+    <h2>TOC</h2>
+  </div>
+</div>
+<script>
+  d3.selectAll("a[id]")
+    .filter(function() {
+      return !this.hasAttribute("href");
+    })
+    .attr("href", function() {
+      return "#" + this.id;
+    });
+</script>
