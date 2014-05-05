@@ -3,6 +3,9 @@ lint ?= jshint
 
 all: hashable.min.js
 
+test:
+	./node_modules/mocha/bin/mocha
+
 %.min.js: %.js
 	$(minify) $< > $@
 
