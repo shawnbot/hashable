@@ -7,7 +7,8 @@ layout: default
 Hashable is a little JavaScript library that makes it easy to add
 **stateful URLs** to your web application. Stateful URLs allow
 visitors to bookmark or share URLs of a specific view (or "state"),
-defined by one or more unique values.
+defined by one or more unique values. Check out the [API reference](api/) for
+more info, or read on below for a quick primer.
 
 ## The hash object
 Out of the box, the `hashable.hash()` object provides a straightforward way to
