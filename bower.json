@@ -1,0 +1,23 @@
+{
+  "name": "hashable",
+  "main": "hashable.js",
+  "version": "1.5.1",
+  "homepage": "https://github.com/shawnbot/hashable",
+  "authors": [
+    "Shawn Allen <shawn.allen@hush.com>"
+  ],
+  "description": "a stateful URL helper",
+  "keywords": [
+    "hash",
+    "url",
+    "location",
+    "state"
+  ],
+  "license": "BSD-2-Clause",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
+  ]
+}
