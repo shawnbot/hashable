@@ -1,6 +1,6 @@
 # hashable
 
-Save and restore state in the browser's `location.hash`, parse and format URLs, and more!
+Save and restore state in the browser's `location.hash`, parse and format URLs, and more! See the [API reference](http://shawnbot.github.io/hashable/api/) for more info.
 
 [![Build Status](https://travis-ci.org/shawnbot/hashable.svg?branch=master)](https://travis-ci.org/shawnbot/hashable)
 
@@ -77,7 +77,6 @@ var map = L.map("map")
 Or you can adapt the [standalone example](https://github.com/shawnbot/curio/blob/master/examples/leaflet-basic.html) to your favorite map engine.
 
 ## Browser Usage
-
 Just drop [hashable.js](https://raw.githubusercontent.com/shawnbot/hashable/master/hashable.js) (or the minified [hashable.min.js](https://raw.githubusercontent.com/shawnbot/hashable/master/hashable.min.js)) into the `<head>` of your
 HTML document, and access it via the global `hashable` object.
 
@@ -95,8 +94,13 @@ HTML document, and access it via the global `hashable` object.
 </html>
 ```
 
-## Using with Node.js
+You can aslo install the JavaScript locally with [Bower](http://bower.io/):
 
+```sh
+$ bower install hashable
+```
+
+## Using with Node.js
 Just install via [npm](http://npmjs.org):
 
 ```sh
