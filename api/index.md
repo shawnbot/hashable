@@ -28,6 +28,76 @@ var hash = hashable.hash()
   .check();
 ```
 
+#### <a id="hash.change">#</a> hash.change(*callback*)
+Register a single *callback* function to be called whenever the hash
+changes, *and* when initialized by [hash.check](#hash.check). This
+can either be an inline function or a function reference:
+
+```js
+hash.change(function(e) {
+});
+// or 
+function hashchange(e) {
+}
+hash.change(hashchange);
+```
+
+The *callback* function receives a single argument: an "event" object
+with the following properties:
+
+* `url`: the URL as parsed, without the leading `#`
+* `data`: the state data as parsed
+* `previous`: the previous state data
+* `diff`: an object listing state data properties that changed
+  between the `previous` and current objects.
+
+**Please note that the state data is stored in `event.data`, not in
+the event object itself.**
+
+##### Data diffs
+The `diff` property in the change callback&rsquo;s event argument
+tells you which properties of the state data have changed since the
+last time the hash was read. The diff is a JavaScript object with one
+property (or "key") per property that was added, removed or changed.
+This object can be used to check whether specific values have changed
+and avoid performing potential costly operations on ones that
+haven&rsquo;t. Here&rsquo;s an example:
+
+```js
+location.hash = "widgets/foo/small";
+var hash = hashable.hash()
+  .format("widgets/{widget}/{size}")
+  .change(function(e) {
+    if (e.data) {
+      showWidget(e.data.widget);
+      setWidgetSize(e.data.size);
+    }
+  })
+  .enable()
+  .check();
+```
+
+Let&rsquo;s assume that the `showWidget()` function is costly in some
+way&mdash;maybe it triggers an AJAX request, or triggers transitions
+or animations&mdash;but that `setWidgetSize()` can be called
+repeatedly without any weird side effects (in other words, it&rsquo;s
+[idempotent](http://en.wikipedia.org/wiki/Idempotence)). In this
+case, we could rewrite our change callback like so:
+
+```js
+hash.change(function(e) {
+  if (e.data) {
+    if (e.diff.widget) showWidget(e.data.widget);
+    if (e.diff.size) setWidgetSize(e.data.size);
+  }
+});
+```
+
+This way, the `showWidget()` function only gets called when the value
+of `e.data.widget` has changed&mdash;and we don&rsquo;t have to do
+any complicated comparison of the previous and current values in the
+change callback. Hooray!
+
 #### <a id="hash.check">#</a> hash.check()
 The `hash.check()` function is the suggested way to initialize your
 state data. It first checks `location.hash` to see if the page has
