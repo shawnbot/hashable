@@ -45,14 +45,32 @@ hash.change(hashchange);
 The *callback* function receives a single argument: an "event" object
 with the following properties:
 
-* `url`: the URL as parsed, without the leading `#`
-* `data`: the state data as parsed
-* `previous`: the previous state data
+* `url`: the URL as parsed, without the leading `#`.
+* `data`: the state data, as set or parsed by the chosen [format](#hash.format).
+* `previous`: the previous state data, or `null` if there was none.
 * `diff`: an object listing state data properties that changed
-  between the `previous` and current objects.
+  between the `previous` and current objects. This will be `null` if
+  the data has not changed according to [hashable.diff](#hashable.diff).
 
 **Please note that the state data is stored in `event.data`, not in
-the event object itself.**
+the event object itself.** In other words, if your code looks like this:
+
+```js
+hash.change(app.setState);
+```
+
+And your `app.setState()` method expects a state object as its first
+argument, then you will not get the expected results. Try this instead:
+
+```js
+hash.change(function(e) {
+  if (e.data) {
+    app.setState(e.data);
+  } else {
+    // handle bad URLs here
+  }
+});
+```
 
 ##### Data diffs
 The `diff` property in the change callback&rsquo;s event argument
