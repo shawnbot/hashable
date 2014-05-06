@@ -16,14 +16,10 @@ var hash = hashable.hash()
   })
   .enable();
 
-// you can update the hash programmatically:
-hash.update({path: "path/to/foo", bar: "hi"});
-// this doesn't update the hash automatically, but this will:
-hash.write();
+// you can set the hash programmatically:
+hash.set({path: "path/to/foo", bar: "hi"});
 // location.hash should now equal:
 // "path/to/foo?bar=hi"
-// and you should see a console.log():
-// "hash data: {path: 'path/to/foo', bar: 'hi'}"
 
 // you can disable and re-enable hashchange event listening:
 hash.disable();
