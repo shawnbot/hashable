@@ -37,10 +37,10 @@
       return hash;
     };
 
-    hash.write = function() {
-      writing = true;
+    hash.write = function(silent) {
+      if (silent) writing = true;
       loc.hash = format(data);
-      writing = false;
+      if (silent) writing = false;
       return hash;
     };
 
@@ -145,7 +145,7 @@
           // console.warn("valid:", url);
         } else if (!data && def) {
           data = def.call(hash, previous);
-          hash.write();
+          hash.write(true);
           url = loc.hash.substr(1);
         }
         var diff = hashable.diff(previous, data);
