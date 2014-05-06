@@ -276,8 +276,9 @@ document.querySelector("a.medium")
 
 For more link-related magic, check out [hash.href](#hash.href).
 
-#### <a id="hash.write">#</a> hash.write(*value*)
-Set the state data *value* and update `location.hash` immediately.
+#### <a id="hash.write">#</a> hash.write(*silent*)
+Write the state data to `location.hash` immediately. If *silent* is truthy, the
+change callback will not be called.
 
 #### <a id="hash.href">#</a> hash.href()
 **This function and its children are intended for use with
