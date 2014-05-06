@@ -11,7 +11,7 @@
   ],
   "main": "hashable.js",
   "scripts": {
-    "test": "make test",
+    "test": "./node_modules/mocha/bin/mocha",
     "build": "make"
   },
   "author": "Shawn Allen <shawn.allen@hush.com>",
