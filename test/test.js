@@ -350,4 +350,23 @@ describe("hashable.hash()", function() {
     });
   });
 
+  wit("should do what the README says", function(done) {
+    window.location.hash = "";
+
+    var hash = window.hashable.hash()
+      .change(function(e) {
+        assert.deepEqual(e.data, {path: "path/to/foo", bar: "hi"});
+        changed = true;
+      })
+      .enable();
+
+    hash.set({path: "path/to/foo", bar: "hi"});
+    assert.equal(window.location.hash, "#path/to/foo?bar=hi");
+
+    process.nextTick(function() {
+      assert.equal(changed, true, "change callback not called");
+      done();
+    });
+  });
+
 });
