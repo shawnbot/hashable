@@ -2,7 +2,7 @@
   "use strict";
   /* jshint -W014 */
 
-  hashable.version = "1.5.2";
+  hashable.version = "1.5.3";
 
   hashable.hash = function(loc) {
     if (!loc) loc = window.location;
@@ -357,12 +357,13 @@
       var data = {};
       str.split(qs.separator)
         .forEach(function(bit) {
-          var parts = bit.split("=", 2),
-              key = decode(parts[0]);
-          if (parts.length === 1) {
+          var parts = bit.split("="),
+              key = decode(parts[0]),
+              val = bit.substr(key.length + 1);
+          if (!val.length) {
             data[key] = true;
           } else {
-            data[key] = decode(parts[1]);
+            data[key] = decode(val);
           }
         });
       return data;

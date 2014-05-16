@@ -2,6 +2,31 @@ var hashable = require("../hashable"),
     assert = require("assert"),
     jsdom = require("jsdom");
 
+describe("hashable.qs", function() {
+  var qs = hashable.qs;
+
+  describe("qs.parse()", function() {
+    it("should parse = in parameter values", function() {
+      assert.deepEqual(qs.parse("foo=bar&baz=foo=1"), {
+        foo: "bar",
+        baz: "foo=1"
+      });
+    });
+
+    it("should parse no parameter value as true", function() {
+      assert.deepEqual(qs.parse("foo=bar&baz"), {
+        foo: "bar",
+        baz: true
+      });
+      assert.deepEqual(qs.parse("foo&baz=bar"), {
+        foo: true,
+        baz: "bar"
+      });
+    });
+  });
+
+});
+
 describe("hashable.format()", function() {
 
   describe("#match()", function() {
