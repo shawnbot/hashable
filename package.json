@@ -1,6 +1,6 @@
 {
   "name": "hashable",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Stateful URLs in the browser hash, parsing and formatting, and more!",
   "keywords": [
     "hash",
