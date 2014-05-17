@@ -360,7 +360,7 @@
           var parts = bit.split("="),
               key = decode(parts[0]),
               val = bit.substr(key.length + 1);
-          if (!val.length) {
+          if (parts.length === 1) {
             data[key] = true;
           } else {
             data[key] = decode(val);
