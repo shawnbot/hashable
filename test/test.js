@@ -22,6 +22,10 @@ describe("hashable.qs", function() {
         foo: true,
         baz: "bar"
       });
+      assert.deepEqual(qs.parse("foo=&bar"), {
+        foo: "",
+        bar: true
+      });
     });
   });
 
