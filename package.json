@@ -1,6 +1,6 @@
 {
   "name": "hashable",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Stateful URLs in the browser hash, parsing and formatting, and more!",
   "keywords": [
     "hash",
@@ -14,7 +14,7 @@
     "test": "./node_modules/mocha/bin/mocha",
     "build": "make"
   },
-  "author": "Shawn Allen <shawn.allen@hush.com>",
+  "author": "Shawn Allen",
   "respository": {
     "type": "git",
     "url": "http://github.com/shawnbot/hashable.git"

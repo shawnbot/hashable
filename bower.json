@@ -1,7 +1,7 @@
 {
   "name": "hashable",
   "main": "hashable.js",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "homepage": "https://github.com/shawnbot/hashable",
   "authors": [
     "Shawn Allen <shawn.allen@hush.com>"
