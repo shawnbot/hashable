@@ -21,8 +21,11 @@
   },
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "mocha": "~1.18.2",
+    "mocha": "~1.19.0",
     "jsdom": "~0.10.5",
     "uglify-js": "~2.4.13"
+  },
+  "dependencies": {
+    "mocha": "^1.19.0"
   }
 }
