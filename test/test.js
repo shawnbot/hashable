@@ -33,6 +33,17 @@ describe("hashable.qs", function() {
 
 describe("hashable.format()", function() {
 
+  it("should default to query() === false", function() {
+    assert.equal(hashable.format("{foo}").query(), false);
+  });
+
+  it("should support the ? suffix", function() {
+    assert.equal(hashable.format("{foo}?").query(), true);
+    assert.equal(hashable.format("foo?")({beep: "boop"}), "foo?beep=boop");
+    assert.equal(hashable.format("foo/{beep}?")({beep: "boop"}), "foo/boop");
+    assert.equal(hashable.format("foo/{beep}?")({beep: "boop", blop: 1}), "foo/boop?blop=1");
+  });
+
   describe("#match()", function() {
     it("should match an empty string", function() {
       var empty = hashable.format("");

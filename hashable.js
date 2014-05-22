@@ -167,10 +167,14 @@
   };
 
   hashable.format = function(fmt) {
+    var query = false;
     if (!fmt) fmt = "";
+    else if (fmt.charAt(fmt.length - 1) === "?") {
+      query = true;
+      fmt = fmt.substr(0, fmt.length - 1);
+    }
 
-    var query = false,
-        keys = [],
+    var keys = [],
         word = "([-\\w\\.]+)",
         wordPattern = new RegExp("{" + word + "}", "g"),
         pattern = new RegExp("^" + fmt.replace(wordPattern, function(_, key) {
