@@ -458,7 +458,7 @@ describe("hashable.router()", function() {
     assert.deepEqual(router.parse("foo/2"), {bar: 2});
   });
 
-  it("should parse and format multiple routes", function(done) {
+  it("should parse and format multiple routes", function() {
     var router = hashable.router()
       .add("foo/{bar}", function() {})
       .add("foo/{bar}/children", {children: true}, function() {});
@@ -466,7 +466,20 @@ describe("hashable.router()", function() {
     assert.equal(router.format({bar: 1}), "foo/1");
     assert.deepEqual(router.parse("foo/2"), {bar: 2});
     assert.deepEqual(router.parse("foo/4/children"), {bar: 4, children: true});
-    done();
+  });
+
+  it("should do what I tell it to", function() {
+    var router = hashable.router()
+      .add("widgets/{widget}")
+      .add("widgets/{widget}/{size}")
+      .add("widgets/{widget}/{size}/detail", {detail: true});
+
+    assert.deepEqual(router.parse("widgets/foo"), {widget: "foo"});
+    assert.deepEqual(router.parse("widgets/foo/small"), {widget: "foo", size: "small"});
+    assert.deepEqual(router.parse("widgets/foo/small/detail"), {widget: "foo", size: "small", detail: true});
+    assert.equal(router.format({widget: "foo"}), "widgets/foo");
+    assert.equal(router.format({widget: "foo", size: "medium"}), "widgets/foo/medium");
+    assert.equal(router.format({widget: "foo", size: "medium", detail: true}),"widgets/foo/medium/detail");
   });
 
 });
