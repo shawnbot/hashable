@@ -486,6 +486,81 @@
   };
 
 
+  hashable.router = function(callback) {
+    var formats = [],
+        valid,
+        invalid = function(e) { },
+        router = function(e) {
+          if (valid) {
+            (valid._callback || callback).call(this, e);
+          } else {
+            invalid.call(this, e);
+          }
+        };
+
+    router.invalid = function(fn) {
+      if (!arguments.length) return invalid;
+      invalid = fn;
+      return router;
+    };
+
+    router.format = function(data) {
+      valid = null;
+      for (var i = 0, len = formats.length; i < len; i++) {
+        var format = formats[i],
+            str = format(data);
+        if (str) {
+          if (format._data) {
+            var parsed = router.parse(str),
+                diff = hashable.diff(data, parsed);
+            if (diff) {
+              // skip formats that don't parse with the same data
+              continue;
+            }
+          }
+          valid = format;
+          return str;
+        }
+      }
+      return null;
+    };
+
+    router.parse = router.format.parse = function(url) {
+      valid = null;
+      for (var i = 0, len = formats.length; i < len; i++) {
+        var format = formats[i],
+            data = format.parse(url);
+        if (data) {
+          hashable.extend(data, format._data);
+          valid = format;
+          return data;
+        }
+      }
+      return null;
+    };
+
+    router.add = function(format, data, callback) {
+      format = hashable.format(format);
+      if (arguments.length === 2) {
+        format._data = {};
+        format._callback = data;
+      } else {
+        format._data = data;
+        format._callback = callback;
+      }
+      formats.push(format);
+      return router;
+    };
+
+    if (typeof fmts === "object") {
+      for (var fmt in fmts) {
+        router.add(fmt, fmts[fmt]);
+      }
+    }
+
+    return router;
+  };
+
   /**
    * Leaflet plugin support
    */

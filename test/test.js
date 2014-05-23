@@ -409,4 +409,64 @@ describe("hashable.hash()", function() {
     });
   });
 
+  wit("should route to the right callbacks", function(done) {
+    window.location.hash = "";
+
+    var calledInvalid = false,
+        router = window.hashable.router()
+          .add("widgets/{widget}", function(e) { })
+          .add("widgets/{widget}/{size}", function(e) { })
+          .add("widgets/{widget}/{size}/detail", {detail: true}, function(e) { }),
+        hash = window.hashable.hash()
+          .format(router.format)
+          .change(router)
+          .enable();
+
+    assert.equal(hash.url({widget: "foo"}), "#widgets/foo");
+    assert.equal(hash.url({widget: "foo", size: "medium"}), "#widgets/foo/medium");
+    assert.equal(hash.url({widget: "foo", size: "medium", detail: true}), "#widgets/foo/medium/detail");
+
+    window.location.hash = "widgets/foo";
+    process.nextTick(function() {
+      assert.deepEqual(hash.data(), {widget: "foo"});
+      window.location.hash = "widgets/foo/small";
+      process.nextTick(function() {
+        assert.deepEqual(hash.data(), {widget: "foo", size: "small"});
+        window.location.hash = "widgets/foo/small/detail";
+        process.nextTick(function() {
+          assert.deepEqual(hash.data(), {widget: "foo", size: "small", detail: true});
+          window.location.hash = "foo/widgets";
+          process.nextTick(function() {
+            assert.equal(hash.data(), null);
+            hash.disable();
+            done();
+          });
+        });
+      });
+    });
+  });
+
+});
+
+
+describe("hashable.router()", function() {
+
+  it("should parse and format a single route", function() {
+    var router = hashable.router()
+      .add("foo/{bar}");
+    assert.equal(router.format({bar: 1}), "foo/1");
+    assert.deepEqual(router.parse("foo/2"), {bar: 2});
+  });
+
+  it("should parse and format multiple routes", function(done) {
+    var router = hashable.router()
+      .add("foo/{bar}", function() {})
+      .add("foo/{bar}/children", {children: true}, function() {});
+
+    assert.equal(router.format({bar: 1}), "foo/1");
+    assert.deepEqual(router.parse("foo/2"), {bar: 2});
+    assert.deepEqual(router.parse("foo/4/children"), {bar: 4, children: true});
+    done();
+  });
+
 });
