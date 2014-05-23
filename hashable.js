@@ -176,6 +176,7 @@
 
     var keys = [],
         word = "([-\\w\\.]+)",
+        strict = true,
         wordPattern = new RegExp("{" + word + "}", "g"),
         pattern = new RegExp("^" + fmt.replace(wordPattern, function(_, key) {
           keys.push(key);
@@ -186,6 +187,15 @@
 
     var format = function(data) {
       if (!data) data = {};
+
+      if (strict) {
+        for (var i = 0, len = keys.length; i < len; i++) {
+          if (!data.hasOwnProperty(keys[i])
+              || hashable.empty(data[keys[i]])) {
+            return null;
+          }
+        }
+      }
 
       var used = [],
           str = fmt.replace(wordPattern, function(_, key) {
@@ -506,23 +516,31 @@
 
     router.format = function(data) {
       valid = null;
+      var str = null;
       for (var i = 0, len = formats.length; i < len; i++) {
         var format = formats[i],
-            str = format(data);
-        if (str) {
+            s = format(data);
+        if (s) {
           if (format._data) {
-            var parsed = router.parse(str),
-                diff = hashable.diff(data, parsed);
+            var parsed = router.parse(s),
+                diff = false;
+            // don't use hashable.diff() here for performance
+            for (var key in parsed) {
+              if (data[key] != parsed[key]) {
+                diff = true;
+                continue;
+              }
+            }
             if (diff) {
               // skip formats that don't parse with the same data
               continue;
             }
           }
           valid = format;
-          return str;
+          str = s;
         }
       }
-      return null;
+      return str;
     };
 
     router.parse = router.format.parse = function(url) {
@@ -541,7 +559,7 @@
 
     router.add = function(format, data, callback) {
       format = hashable.format(format);
-      if (arguments.length === 2) {
+      if (typeof data === "function") {
         format._data = {};
         format._callback = data;
       } else {
