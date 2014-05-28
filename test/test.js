@@ -13,6 +13,13 @@ describe("hashable.qs", function() {
       });
     });
 
+    it("should parse boolean values correctly", function() {
+      assert.deepEqual(qs.parse("foo=true&bar=false"), {
+        foo: true,
+        bar: false
+      });
+    });
+
     it("should parse no parameter value as true", function() {
       assert.deepEqual(qs.parse("foo=bar&baz"), {
         foo: "bar",
@@ -26,6 +33,31 @@ describe("hashable.qs", function() {
         foo: "",
         bar: true
       });
+    });
+  });
+
+  describe("qs.format()", function() {
+    it("should format stuff correctly", function() {
+      assert.equal(qs.format({
+        foo: 1
+      }), "foo=1");
+      assert.equal(qs.format({
+        foo: 2,
+        bar: true
+      }), "foo=2&bar");
+      assert.equal(qs.format({
+        foo: false,
+        bar: true,
+        baz: 10
+      }), "foo=false&bar&baz=10");
+    });
+
+    it("should sort keys", function() {
+      assert.equal(qs.format({
+        foo: false,
+        baz: 10,
+        bar: true
+      }, true), "bar&baz=10&foo=false");
     });
   });
 
