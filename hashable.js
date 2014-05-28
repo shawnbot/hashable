@@ -374,8 +374,10 @@
           var parts = bit.split("="),
               key = decode(parts[0]),
               val = bit.substr(key.length + 1);
-          if (parts.length === 1) {
+          if (parts.length === 1 || val === "true") {
             data[key] = true;
+          } else if (val === "false") {
+            data[key] = false;
           } else {
             data[key] = decode(val);
           }
