@@ -176,6 +176,7 @@
 
     var keys = [],
         word = "([-\\w\\.]+)",
+        strict = true,
         wordPattern = new RegExp("{" + word + "}", "g"),
         pattern = new RegExp("^" + fmt.replace(wordPattern, function(_, key) {
           keys.push(key);
@@ -186,6 +187,15 @@
 
     var format = function(data) {
       if (!data) data = {};
+
+      if (strict) {
+        for (var i = 0, len = keys.length; i < len; i++) {
+          if (!data.hasOwnProperty(keys[i])
+              || hashable.empty(data[keys[i]])) {
+            return null;
+          }
+        }
+      }
 
       var used = [],
           str = fmt.replace(wordPattern, function(_, key) {
@@ -487,6 +497,89 @@
       : function() { return d; };
   };
 
+
+  hashable.router = function(callback) {
+    var formats = [],
+        valid,
+        invalid = function(e) { },
+        router = function(e) {
+          if (valid) {
+            (valid._callback || callback).call(this, e);
+          } else {
+            invalid.call(this, e);
+          }
+        };
+
+    router.invalid = function(fn) {
+      if (!arguments.length) return invalid;
+      invalid = fn;
+      return router;
+    };
+
+    router.format = function(data) {
+      valid = null;
+      var str = null;
+      for (var i = 0, len = formats.length; i < len; i++) {
+        var format = formats[i],
+            s = format(data);
+        if (s) {
+          if (format._data) {
+            var parsed = router.parse(s),
+                diff = false;
+            // don't use hashable.diff() here for performance
+            for (var key in parsed) {
+              if (data[key] != parsed[key]) {
+                diff = true;
+                continue;
+              }
+            }
+            if (diff) {
+              // skip formats that don't parse with the same data
+              continue;
+            }
+          }
+          valid = format;
+          str = s;
+        }
+      }
+      return str;
+    };
+
+    router.parse = router.format.parse = function(url) {
+      valid = null;
+      for (var i = 0, len = formats.length; i < len; i++) {
+        var format = formats[i],
+            data = format.parse(url);
+        if (data) {
+          hashable.extend(data, format._data);
+          valid = format;
+          return data;
+        }
+      }
+      return null;
+    };
+
+    router.add = function(format, data, callback) {
+      format = hashable.format(format);
+      if (typeof data === "function") {
+        format._data = {};
+        format._callback = data;
+      } else {
+        format._data = data;
+        format._callback = callback;
+      }
+      formats.push(format);
+      return router;
+    };
+
+    if (typeof fmts === "object") {
+      for (var fmt in fmts) {
+        router.add(fmt, fmts[fmt]);
+      }
+    }
+
+    return router;
+  };
 
   /**
    * Leaflet plugin support
